@@ -1,0 +1,12 @@
+- name: Read kubeconfig
+  ansible.builtin.slurp:
+    src: /etc/rancher/k3s/k3s.yaml
+  register: kubeconfig_raw
+
+- name: Write kubeconfig locally
+  ansible.builtin.copy:
+    content: "{{ (kubeconfig_raw.content | b64decode) | replace('https://127.0.0.1:6443', 'https://' + ansible_host + ':6443') }}"
+    dest: "{{ local_kubeconfig_path }}"
+    mode: "0600"
+  delegate_to: localhost
+  become: false

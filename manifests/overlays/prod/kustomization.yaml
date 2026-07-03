@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+images:
+  - name: ghcr.io/ayonoaduo/taskapp-backend
+    newName: ghcr.io/ayonoaduo/taskapp-backend
+    newTag: "0000000"
+  - name: ghcr.io/ayonoaduo/taskapp-frontend
+    newName: ghcr.io/ayonoaduo/taskapp-frontend
+    newTag: "0000000"
+patches:
+  - target:
+      kind: ClusterIssuer
+      name: letsencrypt-prod
+    patch: |-
+      - op: replace
+        path: /spec/acme/email
+        value: CHANGE_ME@example.com
+  - target:
+      kind: Ingress
+      name: taskapp
+      namespace: taskapp
+    patch: |-
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: taskapp.CHANGE_ME_DOMAIN
+      - op: replace
+        path: /spec/rules/0/host
+        value: taskapp.CHANGE_ME_DOMAIN

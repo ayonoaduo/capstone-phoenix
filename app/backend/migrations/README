@@ -1,0 +1,7 @@
+Alembic migrations for TaskApp.
+
+Run with:
+
+  flask db upgrade
+
+The Kubernetes migration Job runs this before backend replicas start.

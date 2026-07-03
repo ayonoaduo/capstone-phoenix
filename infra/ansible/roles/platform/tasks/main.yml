@@ -1,0 +1,69 @@
+- name: Wait for Kubernetes API
+  ansible.builtin.command:
+    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get nodes
+  register: kubectl_nodes
+  retries: 30
+  delay: 10
+  until: kubectl_nodes.rc == 0
+  changed_when: false
+
+- name: Install Cilium CLI
+  ansible.builtin.shell: |
+    curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/{{ cilium_cli_version }}/cilium-linux-amd64.tar.gz
+    tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin
+    rm cilium-linux-amd64.tar.gz
+  args:
+    chdir: /tmp
+    creates: /usr/local/bin/cilium
+
+- name: Install Cilium CNI
+  ansible.builtin.command:
+    cmd: cilium install --kubeconfig /etc/rancher/k3s/k3s.yaml
+  register: cilium_install
+  changed_when: false
+  failed_when: cilium_install.rc != 0 and 'already installed' not in cilium_install.stderr
+
+- name: Install cert-manager CRDs and controllers
+  ansible.builtin.command:
+    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml apply -f https://github.com/cert-manager/cert-manager/releases/download/{{ cert_manager_version }}/cert-manager.yaml
+  changed_when: false
+
+- name: Install Helm
+  ansible.builtin.shell: |
+    curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+  args:
+    creates: /usr/local/bin/helm
+
+- name: Add Helm repositories
+  ansible.builtin.shell: |
+    helm repo add external-secrets https://charts.external-secrets.io
+    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    helm repo update
+  changed_when: false
+
+- name: Install External Secrets
+  ansible.builtin.command:
+    cmd: helm upgrade --install external-secrets external-secrets/external-secrets --namespace external-secrets --create-namespace --set installCRDs=true --kubeconfig /etc/rancher/k3s/k3s.yaml
+  changed_when: false
+
+- name: Install kube-prometheus-stack
+  ansible.builtin.command:
+    cmd: helm upgrade --install monitoring prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace --kubeconfig /etc/rancher/k3s/k3s.yaml
+  changed_when: false
+
+- name: Install metrics-server
+  ansible.builtin.command:
+    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/{{ metrics_server_version }}/components.yaml
+  changed_when: false
+
+- name: Create Argo CD namespace
+  ansible.builtin.command:
+    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml create namespace argocd
+  register: argocd_namespace
+  changed_when: argocd_namespace.rc == 0
+  failed_when: argocd_namespace.rc != 0 and 'AlreadyExists' not in argocd_namespace.stderr
+
+- name: Install Argo CD
+  ansible.builtin.command:
+    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/{{ argocd_version }}/manifests/install.yaml
+  changed_when: false

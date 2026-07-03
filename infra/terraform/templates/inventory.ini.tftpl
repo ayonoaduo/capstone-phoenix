@@ -1,0 +1,15 @@
+[k3s_servers]
+control-1 ansible_host=${control_public_ip} private_ip=${control_private_ip}
+
+[k3s_agents]
+%{ for index, ip in worker_public_ips ~}
+worker-${index + 1} ansible_host=${ip} private_ip=${worker_private_ips[index]}
+%{ endfor ~}
+
+[k3s_cluster:children]
+k3s_servers
+k3s_agents
+
+[k3s_cluster:vars]
+ansible_user=ubuntu
+ansible_ssh_common_args='-o StrictHostKeyChecking=accept-new'

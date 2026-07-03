@@ -23,3 +23,8 @@ Before deployment, replace every `CHANGE_ME` placeholder with your real values:
 - AWS Secrets Manager secret `taskapp/prod`.
 
 No real secrets, kubeconfigs, Terraform state, or `.env` files should be committed.
+
+## Course Submission
+
+Final submission form:
+https://docs.google.com/forms/d/e/1FAIpQLSdp-5Zfvt431gY8m2L_MOZ7NQ-8zN2L3jvkgL7P3yP7-pd94Q/viewform?usp=header

@@ -5,10 +5,10 @@ resources:
 images:
   - name: ghcr.io/ayonoaduo/taskapp-backend
     newName: ghcr.io/ayonoaduo/taskapp-backend
-    newTag: "f29b25d"
+    newTag: "manual-002"
   - name: ghcr.io/ayonoaduo/taskapp-frontend
     newName: ghcr.io/ayonoaduo/taskapp-frontend
-    newTag: "f29b25d"
+    newTag: "manual-002"
 patches:
   - target:
       kind: ClusterIssuer

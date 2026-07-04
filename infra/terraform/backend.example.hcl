@@ -1,5 +1,5 @@
-bucket         = "CHANGE_ME_UNIQUE_BUCKET"
+bucket         = "ayonoaduo-capstone-phoenix-tfstate"
 key            = "capstone-phoenix/terraform.tfstate"
 region         = "us-west-2"
-dynamodb_table = "CHANGE_ME_LOCK_TABLE"
+dynamodb_table = "capstone-phoenix-tf-locks"
 encrypt        = true

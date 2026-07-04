@@ -6,17 +6,21 @@
 2. Create Terraform state:
 
    ```bash
-   cd infra/terraform/bootstrap
-   terraform init
-   terraform apply
+   cp infra/terraform/bootstrap/terraform.tfvars.example infra/terraform/bootstrap/terraform.tfvars
+   # Edit infra/terraform/bootstrap/terraform.tfvars, especially state_bucket_name.
+   terraform -chdir=infra/terraform/bootstrap init
+   terraform -chdir=infra/terraform/bootstrap apply -var-file=terraform.tfvars
    ```
 
 3. Fill `infra/terraform/backend.hcl` from bootstrap output.
 4. Apply infrastructure:
 
    ```bash
+   cp infra/terraform/backend.example.hcl infra/terraform/backend.hcl
+   cp infra/terraform/terraform.tfvars.example infra/terraform/terraform.tfvars
+   # Edit backend.hcl and terraform.tfvars for your AWS account, public IP, and SSH key.
    terraform -chdir=infra/terraform init -backend-config=backend.hcl
-   terraform -chdir=infra/terraform apply
+   terraform -chdir=infra/terraform apply -var-file=terraform.tfvars
    ./scripts/render-inventory.sh
    ```
 

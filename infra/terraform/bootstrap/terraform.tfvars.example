@@ -1,0 +1,4 @@
+aws_region        = "us-west-2"
+aws_profile       = "default"
+state_bucket_name = "ayonoaduo-capstone-phoenix-tfstate"
+lock_table_name   = "capstone-phoenix-tf-locks"

@@ -1,0 +1,26 @@
+NAME                               READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                                          SELECTOR
+deployment.apps/taskapp-backend    2/2     2            2           11m   backend      ghcr.io/ayonoaduo/taskapp-backend:manual-002    app.kubernetes.io/name=taskapp-backend
+deployment.apps/taskapp-frontend   2/2     2            2           11m   frontend     ghcr.io/ayonoaduo/taskapp-frontend:manual-002   app.kubernetes.io/name=taskapp-frontend
+
+NAME                                TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE   SELECTOR
+service/cm-acme-http-solver-4ccrq   NodePort    10.43.160.227   <none>        8089:32505/TCP   10m   acme.cert-manager.io/http-domain=1038157518,acme.cert-manager.io/http-token=1151602325,acme.cert-manager.io/http01-solver=true
+service/taskapp-backend             ClusterIP   10.43.159.100   <none>        5000/TCP         11m   app.kubernetes.io/name=taskapp-backend
+service/taskapp-frontend            ClusterIP   10.43.119.55    <none>        8080/TCP         11m   app.kubernetes.io/name=taskapp-frontend
+service/taskapp-postgres            ClusterIP   None            <none>        5432/TCP         15m   app.kubernetes.io/name=taskapp-postgres
+
+NAME                                                  CLASS     HOSTS               ADDRESS                              PORTS     AGE
+ingress.networking.k8s.io/cm-acme-http-solver-8dhj6   <none>    taskapp.versv.net   10.42.1.111,10.42.1.14,10.42.1.150   80        10m
+ingress.networking.k8s.io/taskapp                     traefik   taskapp.versv.net   10.42.1.111,10.42.1.14,10.42.1.150   80, 443   10m
+
+NAME                                                  REFERENCE                    TARGETS                        MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/taskapp-backend   Deployment/taskapp-backend   cpu: 1%/60%, memory: 47%/75%   2         6         2          11m
+
+NAME                                          MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
+poddisruptionbudget.policy/taskapp-backend    1               N/A               1                     11m
+poddisruptionbudget.policy/taskapp-frontend   1               N/A               1                     11m
+
+NAME                                                     STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE   VOLUMEMODE
+persistentvolumeclaim/postgres-data-taskapp-postgres-0   Bound    pvc-4003b1fa-aecd-4b7a-9a61-c1d637411a69   10Gi       RWO            local-path     <unset>                 15m   Filesystem
+
+NAME                                      READY   SECRET        ISSUER             STATUS                                         AGE
+certificate.cert-manager.io/taskapp-tls   False   taskapp-tls   letsencrypt-prod   Issuing certificate as Secret does not exist   10m

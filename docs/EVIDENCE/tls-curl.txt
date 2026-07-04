@@ -1,0 +1,71 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Host taskapp.versv.net:443 was resolved.
+* IPv6: (none)
+* IPv4: 172.67.133.65, 104.21.5.94
+*   Trying 172.67.133.65:443...
+* Connected to taskapp.versv.net (172.67.133.65) port 443
+* ALPN: curl offers h2,http/1.1
+* (304) (OUT), TLS handshake, Client hello (1):
+} [322 bytes data]
+* (304) (IN), TLS handshake, Server hello (2):
+{ [122 bytes data]
+* (304) (IN), TLS handshake, Unknown (8):
+{ [19 bytes data]
+* (304) (IN), TLS handshake, Certificate (11):
+{ [2522 bytes data]
+* (304) (IN), TLS handshake, CERT verify (15):
+{ [79 bytes data]
+* (304) (IN), TLS handshake, Finished (20):
+{ [36 bytes data]
+* (304) (OUT), TLS handshake, Finished (20):
+} [36 bytes data]
+* SSL connection using TLSv1.3 / AEAD-CHACHA20-POLY1305-SHA256 / [blank] / UNDEF
+* ALPN: server accepted h2
+* Server certificate:
+*  subject: CN=versv.net
+*  start date: Jun 18 13:11:36 2026 GMT
+*  expire date: Sep 16 14:11:34 2026 GMT
+*  issuer: C=US; O=Google Trust Services; CN=WE1
+*  SSL certificate verify ok.
+* using HTTP/2
+  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0* [HTTP/2] [1] OPENED stream for https://taskapp.versv.net/
+* [HTTP/2] [1] [:method: HEAD]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: taskapp.versv.net]
+* [HTTP/2] [1] [:path: /]
+* [HTTP/2] [1] [user-agent: curl/8.7.1]
+* [HTTP/2] [1] [accept: */*]
+> HEAD / HTTP/2
+> Host: taskapp.versv.net
+> User-Agent: curl/8.7.1
+> Accept: */*
+> 
+* Request completely sent off
+< HTTP/2 200 
+< date: Sat, 04 Jul 2026 23:00:17 GMT
+< content-type: text/html
+< accept-ranges: bytes
+< nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+< last-modified: Sat, 04 Jul 2026 22:35:22 GMT
+< server: cloudflare
+< cf-cache-status: DYNAMIC
+< report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=A9Gzu046UaiWHjm6I%2FXnNoY9QnKk8LZE4o7UxXIIm2P0l%2BTngki7nW96Qd8r7%2Fb7jOhEcbGLVH4GeYjQYtMjZTJsGPFEqvmYYBjFBjXTQt8Y%2BACX3MSv9Zrf%2FhmwRg5awg2zMg%3D%3D"}]}
+< cf-ray: a161bec86bc4ed0b-LHR
+< alt-svc: h3=":443"; ma=86400
+< 
+{ [0 bytes data]
+  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0
+* Connection #0 to host taskapp.versv.net left intact
+HTTP/2 200 
+date: Sat, 04 Jul 2026 23:00:17 GMT
+content-type: text/html
+accept-ranges: bytes
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+last-modified: Sat, 04 Jul 2026 22:35:22 GMT
+server: cloudflare
+cf-cache-status: DYNAMIC
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=A9Gzu046UaiWHjm6I%2FXnNoY9QnKk8LZE4o7UxXIIm2P0l%2BTngki7nW96Qd8r7%2Fb7jOhEcbGLVH4GeYjQYtMjZTJsGPFEqvmYYBjFBjXTQt8Y%2BACX3MSv9Zrf%2FhmwRg5awg2zMg%3D%3D"}]}
+cf-ray: a161bec86bc4ed0b-LHR
+alt-svc: h3=":443"; ma=86400
+

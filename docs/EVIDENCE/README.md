@@ -4,13 +4,13 @@ Save screenshots or terminal logs for each item before submission.
 
 ## Required Proof
 
-Nodes:
+Nodes - Nodes.png:
 
 ```bash
 kubectl --kubeconfig infra/ansible/kubeconfig get nodes -o wide
 ```
 
-Pods spread across nodes:
+Pods spread across nodes - pods.png:
 
 ```bash
 kubectl --kubeconfig infra/ansible/kubeconfig -n taskapp get pods -o wide
@@ -55,17 +55,4 @@ Worker failover:
 kubectl --kubeconfig infra/ansible/kubeconfig drain <worker-node> --ignore-daemonsets --delete-emptydir-data
 kubectl --kubeconfig infra/ansible/kubeconfig -n taskapp get pods -o wide
 kubectl --kubeconfig infra/ansible/kubeconfig uncordon <worker-node>
-```
-
-## Suggested Files
-
-```text
-docs/EVIDENCE/nodes.txt
-docs/EVIDENCE/pods-wide.txt
-docs/EVIDENCE/argocd.txt
-docs/EVIDENCE/tls-curl.txt
-docs/EVIDENCE/postgres-persistence.txt
-docs/EVIDENCE/zero-downtime.txt
-docs/EVIDENCE/hpa.txt
-docs/EVIDENCE/worker-drain.txt
 ```

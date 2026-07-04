@@ -1,0 +1,3 @@
+NAME                    SYNC STATUS   HEALTH STATUS   REVISION
+platform-secret-store   Synced        Healthy         0d9f75335b14d48ef7b8da4bcbfcbd439791bbf5
+taskapp                 Synced        Healthy         0d9f75335b14d48ef7b8da4bcbfcbd439791bbf5

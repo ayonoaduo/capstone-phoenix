@@ -1,0 +1,9 @@
+NAME                                READY   STATUS        RESTARTS   AGE     IP           NODE             NOMINATED NODE   READINESS GATES
+cm-acme-http-solver-jdqld           1/1     Running       0          13m     10.0.0.98    ip-10-42-1-150   <none>           <none>
+taskapp-backend-5b8fbd85c6-sf8v4    0/1     Terminating   0          13m     <none>       ip-10-42-1-111   <none>           <none>
+taskapp-backend-76c7cf8f7d-skzks    1/1     Running       0          18s     10.0.1.210   ip-10-42-1-14    <none>           <none>
+taskapp-backend-76c7cf8f7d-vvp6p    1/1     Running       0          7s      10.0.0.149   ip-10-42-1-150   <none>           <none>
+taskapp-frontend-64d4d75bfc-d8ng4   1/1     Running       0          18s     10.0.0.234   ip-10-42-1-150   <none>           <none>
+taskapp-frontend-64d4d75bfc-lghq8   1/1     Running       0          12s     10.0.2.103   ip-10-42-1-111   <none>           <none>
+taskapp-migrate-v7h7v               0/1     Completed     0          3m42s   10.0.0.179   ip-10-42-1-150   <none>           <none>
+taskapp-postgres-0                  1/1     Running       0          117s    10.0.1.119   ip-10-42-1-14    <none>           <none>

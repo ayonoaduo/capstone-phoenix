@@ -1,0 +1,5 @@
+NAME              REFERENCE                    TARGETS                                     MINPODS   MAXPODS   REPLICAS   AGE
+taskapp-backend   Deployment/taskapp-backend   cpu: <unknown>/60%, memory: <unknown>/75%   2         6         2          15m
+taskapp-backend   Deployment/taskapp-backend   cpu: <unknown>/60%, memory: 47%/75%         2         6         2          15m
+taskapp-backend   Deployment/taskapp-backend   cpu: 1%/60%, memory: 47%/75%                2         6         2          15m
+taskapp-backend   Deployment/taskapp-backend   cpu: 1%/60%, memory: 46%/75%                2         6         2          15m

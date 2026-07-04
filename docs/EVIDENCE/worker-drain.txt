@@ -1,0 +1,47 @@
+Draining ip-10-42-1-150
+node/ip-10-42-1-150 cordoned
+evicting pod argocd/argocd-dex-server-545496896d-nc9v2
+evicting pod external-secrets/external-secrets-cert-controller-66b5bb8479-2w978
+evicting pod kube-system/helm-install-traefik-t2bmh
+evicting pod argocd/argocd-repo-server-54f844bcb-thn25
+evicting pod external-secrets/external-secrets-5d885fcc87-sg7rl
+evicting pod taskapp/cm-acme-http-solver-jdqld
+evicting pod kube-system/local-path-provisioner-86f46b7bf7-zsjg2
+evicting pod taskapp/taskapp-backend-76c7cf8f7d-vvp6p
+evicting pod kube-system/coredns-576bfc4dc7-6d2cq
+evicting pod taskapp/taskapp-frontend-64d4d75bfc-d8ng4
+evicting pod monitoring/monitoring-grafana-9b7bfd7dc-wf77g
+evicting pod taskapp/taskapp-migrate-v7h7v
+pod/taskapp-migrate-v7h7v evicted
+pod/helm-install-traefik-t2bmh evicted
+pod/taskapp-frontend-64d4d75bfc-d8ng4 evicted
+pod/coredns-576bfc4dc7-6d2cq evicted
+pod/argocd-repo-server-54f844bcb-thn25 evicted
+pod/external-secrets-5d885fcc87-sg7rl evicted
+pod/cm-acme-http-solver-jdqld evicted
+pod/argocd-dex-server-545496896d-nc9v2 evicted
+pod/monitoring-grafana-9b7bfd7dc-wf77g evicted
+pod/external-secrets-cert-controller-66b5bb8479-2w978 evicted
+pod/taskapp-backend-76c7cf8f7d-vvp6p evicted
+pod/local-path-provisioner-86f46b7bf7-zsjg2 evicted
+node/ip-10-42-1-150 drained
+NAME                                READY   STATUS    RESTARTS      AGE     IP           NODE             NOMINATED NODE   READINESS GATES
+backend-load-1                      1/1     Running   0             9s      10.0.1.5     ip-10-42-1-14    <none>           <none>
+backend-load-10                     1/1     Running   0             4s      10.0.2.205   ip-10-42-1-111   <none>           <none>
+backend-load-11                     1/1     Running   0             4s      10.0.1.96    ip-10-42-1-14    <none>           <none>
+backend-load-12                     1/1     Running   0             3s      10.0.2.95    ip-10-42-1-111   <none>           <none>
+backend-load-2                      1/1     Running   0             9s      10.0.1.80    ip-10-42-1-14    <none>           <none>
+backend-load-3                      1/1     Running   0             8s      10.0.1.78    ip-10-42-1-14    <none>           <none>
+backend-load-4                      1/1     Running   0             8s      10.0.1.169   ip-10-42-1-14    <none>           <none>
+backend-load-5                      1/1     Running   0             7s      10.0.2.208   ip-10-42-1-111   <none>           <none>
+backend-load-6                      1/1     Running   0             7s      10.0.1.160   ip-10-42-1-14    <none>           <none>
+backend-load-7                      1/1     Running   0             6s      10.0.1.62    ip-10-42-1-14    <none>           <none>
+backend-load-8                      1/1     Running   0             6s      10.0.1.247   ip-10-42-1-14    <none>           <none>
+backend-load-9                      1/1     Running   0             5s      10.0.2.147   ip-10-42-1-111   <none>           <none>
+cm-acme-http-solver-58nk7           1/1     Running   0             25s     10.0.1.196   ip-10-42-1-14    <none>           <none>
+taskapp-backend-76c7cf8f7d-skzks    1/1     Running   0             2m5s    10.0.1.210   ip-10-42-1-14    <none>           <none>
+taskapp-backend-76c7cf8f7d-tk286    1/1     Running   0             31s     10.0.2.216   ip-10-42-1-111   <none>           <none>
+taskapp-frontend-64d4d75bfc-2vdxl   1/1     Running   1 (25s ago)   32s     10.0.1.77    ip-10-42-1-14    <none>           <none>
+taskapp-frontend-64d4d75bfc-lghq8   1/1     Running   0             119s    10.0.2.103   ip-10-42-1-111   <none>           <none>
+taskapp-postgres-0                  1/1     Running   0             3m44s   10.0.1.119   ip-10-42-1-14    <none>           <none>
+node/ip-10-42-1-150 uncordoned

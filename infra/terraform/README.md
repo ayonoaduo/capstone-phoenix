@@ -1,28 +1,25 @@
 # Terraform
 
-This provisions three EC2 nodes for k3s on AWS.
+AWS infrastructure for the k3s cluster.
 
-1. Bootstrap remote state once:
+## Remote State Bootstrap
 
-   ```bash
-   cp bootstrap/terraform.tfvars.example bootstrap/terraform.tfvars
-   # Edit bootstrap/terraform.tfvars, especially state_bucket_name.
-   terraform -chdir=bootstrap init
-   terraform -chdir=bootstrap apply -var-file=terraform.tfvars
-   ```
+```bash
+cp infra/terraform/bootstrap/terraform.tfvars.example infra/terraform/bootstrap/terraform.tfvars
+# edit state_bucket_name, region, profile
+terraform -chdir=infra/terraform/bootstrap init
+terraform -chdir=infra/terraform/bootstrap apply -var-file=terraform.tfvars
+```
 
-2. Copy `backend.example.hcl` to a local, ignored `backend.hcl` and fill in bucket/table names from bootstrap output:
+## Cluster
 
-   ```bash
-   cp backend.example.hcl backend.hcl
-   ```
+```bash
+cp infra/terraform/backend.example.hcl infra/terraform/backend.hcl
+cp infra/terraform/terraform.tfvars.example infra/terraform/terraform.tfvars
+# edit backend.hcl and terraform.tfvars
+terraform -chdir=infra/terraform init -backend-config=backend.hcl
+terraform -chdir=infra/terraform apply -var-file=terraform.tfvars
+./scripts/render-inventory.sh
+```
 
-3. Provision the cluster:
-
-   ```bash
-   cp terraform.tfvars.example terraform.tfvars
-   # Edit terraform.tfvars for your public IP and SSH key.
-   terraform init -backend-config=backend.hcl
-   terraform apply -var-file=terraform.tfvars
-   terraform output -json > ../../infra/ansible/terraform-output.json
-   ```
+Local `backend.hcl`, `terraform.tfvars`, and state files are ignored.

@@ -1,10 +1,14 @@
-# Argo CD Applications
+# Argo CD Apps
 
-After Ansible installs Argo CD, apply these once:
+Apply once after Argo CD is running:
 
 ```bash
 kubectl --kubeconfig infra/ansible/kubeconfig apply -f gitops/apps/platform-secret-store.yaml
 kubectl --kubeconfig infra/ansible/kubeconfig apply -f gitops/apps/taskapp.yaml
 ```
 
-After that, Argo CD owns the live state. Changes should flow through git commits.
+Check:
+
+```bash
+kubectl --kubeconfig infra/ansible/kubeconfig -n argocd get applications
+```

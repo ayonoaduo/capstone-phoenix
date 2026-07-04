@@ -1,22 +1,17 @@
-# gitops/ — Argo CD owns the cluster
+# GitOps
 
-This is your **Portainer GitOps, leveled up to Kubernetes**. The cluster's desired state
-lives in *this git repo*; Argo CD continuously syncs it. Your final, graded state must be
-reconciled by Argo — not by you running `kubectl apply` by hand.
+Argo CD is used after the cluster is built by Terraform and Ansible.
 
-**Produce:**
-- Install Argo CD (manifest or Helm) — document how in RUNBOOK.md.
-- An Argo CD `Application` (this folder) pointing at `manifests/` (or your Helm/kustomize path),
-  with `syncPolicy.automated` (prune + selfHeal). App-of-apps if you split platform vs app.
+## Applications
 
-**Acceptance / demo (required for the GitOps points):**
-1. `argocd app get taskapp` → `Synced` + `Healthy`.
-2. Commit a change (e.g. bump frontend replicas 2→3), push.
-3. Show Argo auto-syncing and the new Pod appearing — **no manual apply.**
+- `apps/platform-secret-store.yaml` syncs `gitops/platform/external-secrets/`.
+- `apps/taskapp.yaml` syncs `manifests/overlays/prod`.
 
-**Stretch:** a CI job that builds a new image, pushes to GHCR, and bumps the pinned tag in
-this repo → Argo deploys it. That closes the loop your `cd.yaml` started in the CI/CD lesson.
+Apply these once after Ansible installs Argo CD:
 
-> Secrets + GitOps: don't commit a plaintext Secret to satisfy "git owns everything." Use
-> Sealed Secrets / External Secrets (stretch) so the encrypted form is safe in git, or create
-> the Secret out-of-band and let Argo ignore it. State your choice in ARCHITECTURE.md.
+```bash
+kubectl --kubeconfig infra/ansible/kubeconfig apply -f gitops/apps/platform-secret-store.yaml
+kubectl --kubeconfig infra/ansible/kubeconfig apply -f gitops/apps/taskapp.yaml
+```
+
+After that, app changes should go through git commits and Argo CD auto-sync.

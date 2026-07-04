@@ -1,30 +1,30 @@
-# Capstone Phoenix: TaskApp on Real Kubernetes
+# Capstone Phoenix
 
-This repository deploys TaskApp to a three-node k3s cluster on AWS with Terraform, Ansible, Kubernetes manifests, Argo CD GitOps, HTTPS, autoscaling, network policy, and operational evidence.
+TaskApp deployed to a three-node AWS k3s cluster with Terraform, Ansible, Argo CD, cert-manager TLS, autoscaling, network policies, and persistent Postgres.
 
-## Layout
+## Quick Map
 
-- `app/backend` - Flask API, migrations, production Dockerfile.
-- `app/frontend` - React frontend, nginx runtime, production Dockerfile.
-- `infra/terraform` - AWS network, security group, EC2 nodes, remote state bootstrap.
-- `infra/ansible` - node hardening, k3s install, kubeconfig fetch, platform bootstrap.
-- `manifests` - Kustomize app manifests for TaskApp.
-- `gitops` - Argo CD Application manifests.
-- `docs` - architecture, runbook, cost, and evidence checklist.
+- `app/` - React frontend and Flask backend source plus Dockerfiles.
+- `infra/terraform/` - AWS VPC, firewall, EC2 nodes, S3 remote state bootstrap.
+- `infra/ansible/` - node hardening, k3s install, platform controllers.
+- `manifests/` - Kustomize manifests for TaskApp.
+- `gitops/` - Argo CD Applications.
+- `docs/` - architecture, runbook, cost, and evidence checklist.
+- `scripts/` - small helper commands used during provisioning and demos.
 
-## Required local values
+## Before Provisioning
 
-Before deployment, replace every `CHANGE_ME` placeholder with your real values:
+Update local ignored files and deployment placeholders:
 
-- GitHub username/repo URL.
-- AWS region/profile.
-- Domain name and Let's Encrypt email.
-- GHCR image tags.
-- AWS Secrets Manager secret `taskapp/prod`.
+- `infra/terraform/bootstrap/terraform.tfvars`
+- `infra/terraform/backend.hcl`
+- `infra/terraform/terraform.tfvars`
+- `gitops/platform/external-secrets/cluster-secret-store.yaml`
+- `manifests/overlays/prod/kustomization.yaml`
+- `manifests/base/ingress.yaml` or the prod overlay patches for domain/email
 
-No real secrets, kubeconfigs, Terraform state, or `.env` files should be committed.
+Do not commit real `.env`, `*.tfvars`, kubeconfig, Terraform state, node tokens, or secret values.
 
-## Course Submission
+## Run
 
-Final submission form:
-https://docs.google.com/forms/d/e/1FAIpQLSdp-5Zfvt431gY8m2L_MOZ7NQ-8zN2L3jvkgL7P3yP7-pd94Q/viewform?usp=header
+Use [docs/RUNBOOK.md](docs/RUNBOOK.md) as the command sequence from remote-state bootstrap through Argo CD sync.

@@ -1,15 +1,11 @@
 # Ansible
 
-Render inventory from Terraform:
+Installs k3s and platform controllers on the Terraform-created nodes.
 
 ```bash
-terraform -chdir=../terraform output -raw ansible_inventory > inventory.ini
+ansible-galaxy collection install -r infra/ansible/requirements.yml
+ansible-playbook -i infra/ansible/inventory.ini infra/ansible/site.yml
+ansible-playbook -i infra/ansible/inventory.ini infra/ansible/site.yml
 ```
 
-Then install the cluster:
-
-```bash
-ansible-playbook -i inventory.ini site.yml
-```
-
-Run it twice. The second run should be idempotent apart from package cache checks.
+The second run checks idempotency. The playbook also writes `infra/ansible/kubeconfig` for local `kubectl`.

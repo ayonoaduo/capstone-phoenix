@@ -1,17 +1,17 @@
 # Architecture
 
-TaskApp runs on a three-node k3s cluster on AWS: one server node and two worker nodes. Terraform owns the VPC, subnet, security group, SSH key, and EC2 instances. Ansible hardens the nodes, installs k3s, joins workers, fetches kubeconfig, and installs the platform controllers.
+TaskApp runs on AWS EC2 using one k3s server and two k3s workers. Terraform creates the network, firewall, key pair, and nodes. Ansible hardens the hosts, installs k3s, joins workers, fetches kubeconfig, and installs platform controllers.
 
 ## Request Flow
 
-DNS points `taskapp.<domain>` to the public node address handling Traefik ingress. A browser request enters AWS security group ports `80/443`, reaches Traefik, terminates TLS through cert-manager's Let's Encrypt certificate, and routes to the frontend Service. The nginx frontend serves React assets and proxies `/api/*` to the backend Service. Backend pods talk to Postgres through the headless Postgres Service and a StatefulSet PVC.
+`taskapp.<domain>` resolves to the cluster ingress. Traefik receives HTTPS traffic, cert-manager provides the Let's Encrypt certificate, and the Ingress routes to the frontend Service. The nginx frontend serves React and proxies `/api` to the backend Service. Backend pods connect to Postgres through a headless Service and StatefulSet PVC.
 
-## Single-Server Assumptions Fixed
+## Key Design Choices
 
-- Startup database creation was removed from Flask replicas. Migrations now run once through the Argo CD PreSync Job.
-- Frontend and backend run as Deployments with two replicas and topology spread constraints, so one node failure does not remove a whole tier.
-- Postgres uses a StatefulSet and PVC so deleting the pod does not delete task data.
-- Probes use `/healthz`, `/api/health`, and `pg_isready` so Kubernetes routes only to ready pods.
-- Rolling updates use `maxUnavailable: 0` to keep capacity during deploys.
-- NetworkPolicy defaults to deny and allows only required frontend, backend, Postgres, and DNS traffic.
-- Secrets live in AWS Secrets Manager and are synced by External Secrets; secret values are not stored in git.
+- Same-origin `/api` avoids browser CORS and keeps one TLS hostname.
+- Migrations run as an Argo CD PreSync Job so backend replicas do not race.
+- Frontend and backend run with two replicas and topology spread constraints.
+- Postgres uses StatefulSet plus PVC so task data survives pod replacement.
+- NetworkPolicy defaults to deny and only opens required app paths.
+- External Secrets reads AWS Secrets Manager so secret values stay out of git.
+- HPA, PDBs, probes, resource limits, and security contexts cover the advanced requirements.

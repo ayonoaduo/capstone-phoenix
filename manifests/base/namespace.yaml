@@ -2,5 +2,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
   labels:
     name: taskapp

@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: taskapp-config
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "-4"
 data:
   DATABASE_HOST: taskapp-postgres
   DATABASE_PORT: "5432"

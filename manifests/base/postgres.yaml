@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: taskapp-postgres
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
 spec:
   clusterIP: None
   selector:
@@ -17,6 +19,8 @@ kind: StatefulSet
 metadata:
   name: taskapp-postgres
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   serviceName: taskapp-postgres
   replicas: 1

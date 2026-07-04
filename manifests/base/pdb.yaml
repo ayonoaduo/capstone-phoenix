@@ -3,6 +3,8 @@ kind: PodDisruptionBudget
 metadata:
   name: taskapp-backend
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
 spec:
   minAvailable: 1
   selector:
@@ -14,6 +16,8 @@ kind: PodDisruptionBudget
 metadata:
   name: taskapp-frontend
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
 spec:
   minAvailable: 1
   selector:

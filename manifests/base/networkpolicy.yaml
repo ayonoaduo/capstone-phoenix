@@ -3,6 +3,8 @@ kind: NetworkPolicy
 metadata:
   name: default-deny
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   podSelector: {}
   policyTypes:
@@ -14,6 +16,8 @@ kind: NetworkPolicy
 metadata:
   name: allow-dns
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   podSelector: {}
   policyTypes:
@@ -34,6 +38,8 @@ kind: NetworkPolicy
 metadata:
   name: allow-ingress-to-frontend
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   podSelector:
     matchLabels:
@@ -52,6 +58,8 @@ kind: NetworkPolicy
 metadata:
   name: allow-frontend-to-backend
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   podSelector:
     matchLabels:
@@ -72,6 +80,8 @@ kind: NetworkPolicy
 metadata:
   name: allow-frontend-backend-ingress
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   podSelector:
     matchLabels:
@@ -92,6 +102,8 @@ kind: NetworkPolicy
 metadata:
   name: allow-backend-egress-to-postgres
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   podSelector:
     matchLabels:
@@ -112,6 +124,8 @@ kind: NetworkPolicy
 metadata:
   name: allow-migrate-egress-to-postgres
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   podSelector:
     matchLabels:
@@ -132,6 +146,8 @@ kind: NetworkPolicy
 metadata:
   name: allow-backend-to-postgres
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   podSelector:
     matchLabels:

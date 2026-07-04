@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: taskapp-frontend
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   selector:
     app.kubernetes.io/name: taskapp-frontend
@@ -16,6 +18,8 @@ kind: Deployment
 metadata:
   name: taskapp-frontend
   namespace: taskapp
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   replicas: 2
   strategy:

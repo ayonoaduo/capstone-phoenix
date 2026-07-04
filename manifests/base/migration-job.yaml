@@ -4,9 +4,9 @@ metadata:
   name: taskapp-migrate
   namespace: taskapp
   annotations:
-    argocd.argoproj.io/hook: PreSync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+    argocd.argoproj.io/sync-wave: "0"
 spec:
+  ttlSecondsAfterFinished: 600
   backoffLimit: 3
   template:
     metadata:

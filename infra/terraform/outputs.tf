@@ -20,10 +20,11 @@ output "worker_private_ips" {
 
 output "ansible_inventory" {
   value = templatefile("${path.module}/templates/inventory.ini.tftpl", {
-    control_public_ip  = module.compute.control_plane_public_ip
-    control_private_ip = module.compute.control_plane_private_ip
-    worker_public_ips  = module.compute.worker_public_ips
-    worker_private_ips = module.compute.worker_private_ips
+    control_public_ip       = module.compute.control_plane_public_ip
+    control_private_ip      = module.compute.control_plane_private_ip
+    worker_public_ips       = module.compute.worker_public_ips
+    worker_private_ips      = module.compute.worker_private_ips
+    ssh_private_key_path    = trimsuffix(var.ssh_public_key_path, ".pub")
   })
   description = "Render this to infra/ansible/inventory.ini."
 }

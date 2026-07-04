@@ -1,11 +1,24 @@
 - name: Wait for Kubernetes API
   ansible.builtin.command:
-    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get nodes
+    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml --request-timeout=30s get nodes
   register: kubectl_nodes
   retries: 30
   delay: 10
   until: kubectl_nodes.rc == 0
   changed_when: false
+
+- name: Wait for Kubernetes API readiness endpoint
+  ansible.builtin.command:
+    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml --request-timeout=30s get --raw=/readyz
+  register: api_readyz
+  retries: 20
+  delay: 15
+  until: api_readyz.rc == 0
+  changed_when: false
+
+- name: Give k3s API a short stabilization window
+  ansible.builtin.pause:
+    seconds: 30
 
 - name: Install Cilium CLI
   ansible.builtin.shell: |
@@ -18,14 +31,44 @@
 
 - name: Install Cilium CNI
   ansible.builtin.command:
-    cmd: cilium install --kubeconfig /etc/rancher/k3s/k3s.yaml
+    cmd: cilium install --wait=false
+  environment:
+    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+    CILIUM_CLI_SKIP_UPDATE_CHECK: "true"
   register: cilium_install
+  retries: 5
+  delay: 60
+  until: cilium_install.rc == 0 or 'already installed' in cilium_install.stderr
   changed_when: false
   failed_when: cilium_install.rc != 0 and 'already installed' not in cilium_install.stderr
 
+- name: Wait for Cilium to become ready
+  ansible.builtin.command:
+    cmd: cilium status --wait --wait-duration 5m
+  environment:
+    KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+  register: cilium_status
+  retries: 3
+  delay: 30
+  until: cilium_status.rc == 0
+  changed_when: false
+
+- name: Wait for all Kubernetes nodes to be Ready
+  ansible.builtin.command:
+    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml wait --for=condition=Ready nodes --all --timeout=300s
+  register: nodes_ready
+  retries: 3
+  delay: 30
+  until: nodes_ready.rc == 0
+  changed_when: false
+
 - name: Install cert-manager CRDs and controllers
   ansible.builtin.command:
-    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml apply -f https://github.com/cert-manager/cert-manager/releases/download/{{ cert_manager_version }}/cert-manager.yaml
+    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml --request-timeout=120s apply -f https://github.com/cert-manager/cert-manager/releases/download/{{ cert_manager_version }}/cert-manager.yaml
+  register: cert_manager_apply
+  retries: 3
+  delay: 20
+  until: cert_manager_apply.rc == 0
   changed_when: false
 
 - name: Install Helm
@@ -53,7 +96,11 @@
 
 - name: Install metrics-server
   ansible.builtin.command:
-    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/{{ metrics_server_version }}/components.yaml
+    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml --request-timeout=120s apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/{{ metrics_server_version }}/components.yaml
+  register: metrics_server_apply
+  retries: 3
+  delay: 20
+  until: metrics_server_apply.rc == 0
   changed_when: false
 
 - name: Create Argo CD namespace
@@ -65,5 +112,9 @@
 
 - name: Install Argo CD
   ansible.builtin.command:
-    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/{{ argocd_version }}/manifests/install.yaml
+    cmd: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml --request-timeout=180s apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/{{ argocd_version }}/manifests/install.yaml
+  register: argocd_apply
+  retries: 5
+  delay: 30
+  until: argocd_apply.rc == 0
   changed_when: false

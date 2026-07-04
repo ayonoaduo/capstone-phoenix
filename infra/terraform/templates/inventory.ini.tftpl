@@ -12,4 +12,6 @@ k3s_agents
 
 [k3s_cluster:vars]
 ansible_user=ubuntu
-ansible_ssh_common_args='-o StrictHostKeyChecking=accept-new'
+ansible_ssh_private_key_file=${ssh_private_key_path}
+ansible_python_interpreter=/usr/bin/python3
+ansible_ssh_common_args='-o StrictHostKeyChecking=accept-new -o IdentitiesOnly=yes -o ControlMaster=no -o ServerAliveInterval=15 -o ServerAliveCountMax=4 -o ConnectTimeout=60 -o ConnectionAttempts=5'

@@ -19,7 +19,7 @@ cp infra/terraform/terraform.tfvars.example infra/terraform/terraform.tfvars
 # edit backend.hcl and terraform.tfvars
 terraform -chdir=infra/terraform init -backend-config=backend.hcl
 terraform -chdir=infra/terraform apply -var-file=terraform.tfvars
-./scripts/render-inventory.sh
+terraform -chdir=infra/terraform output -raw ansible_inventory > infra/ansible/inventory.ini
 ```
 
 Local `backend.hcl`, `terraform.tfvars`, and state files are ignored.

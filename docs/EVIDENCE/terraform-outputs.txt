@@ -1,0 +1,36 @@
+ansible_inventory = <<EOT
+[k3s_servers]
+control-1 ansible_host=51.20.120.241 private_ip=10.42.1.111
+
+[k3s_agents]
+worker-1 ansible_host=56.228.17.245 private_ip=10.42.1.150
+worker-2 ansible_host=13.49.0.202 private_ip=10.42.1.14
+
+[k3s_cluster:children]
+k3s_servers
+k3s_agents
+
+[k3s_cluster:vars]
+ansible_user=ubuntu
+ansible_ssh_private_key_file=/Users/oni/.ssh/ts_capstone
+ansible_python_interpreter=/usr/bin/python3
+ansible_ssh_common_args='-o StrictHostKeyChecking=accept-new -o IdentitiesOnly=yes -o ControlMaster=no -o ServerAliveInterval=15 -o ServerAliveCountMax=4 -o ConnectTimeout=60 -o ConnectionAttempts=5'
+
+EOT
+control_plane_private_ip = "10.42.1.111"
+control_plane_public_ip = "51.20.120.241"
+worker_private_ips = [
+  "10.42.1.150",
+  "10.42.1.14",
+]
+worker_public_ips = [
+  "56.228.17.245",
+  "13.49.0.202",
+]
+[33m╷[0m[0m
+[33m│[0m [0m[1m[33mWarning: [0m[0m[1mDeprecated Parameter[0m
+[33m│[0m [0m
+[33m│[0m [0m[0mThe parameter "dynamodb_table" is
+[33m│[0m [0mdeprecated. Use parameter
+[33m│[0m [0m"use_lockfile" instead.
+[33m╵[0m[0m

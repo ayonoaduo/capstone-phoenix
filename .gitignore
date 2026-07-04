@@ -26,7 +26,8 @@ __pycache__/
 venv/
 coverage/
 .pytest_cache/
-
+infra/terraform/terraform.tfvars
+    
 # OS/editor noise
 .DS_Store
 .idea/

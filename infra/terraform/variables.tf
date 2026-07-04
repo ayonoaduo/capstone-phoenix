@@ -3,11 +3,11 @@ variable "aws_region" {
   description = "AWS region for the capstone cluster."
 }
 
-variable "aws_profile" {
-  type        = string
-  description = "Local AWS CLI profile name."
-  default     = null
-}
+# variable "aws_profile" {
+#   type        = string
+#   description = "Local AWS CLI profile name."
+#   default     = null
+# }
 
 variable "project_name" {
   type        = string
